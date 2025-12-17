@@ -18,6 +18,7 @@ export default function ScanPage() {
   const [detail, setDetail] = useState('');
   const scannerRef = useRef<any>(null);
   const [role, setRole] = useState<string | null>(null);
+  const [showToast, setShowToast] = useState(false);
 
   if (!client) {
     return (
@@ -45,6 +46,17 @@ export default function ScanPage() {
     };
     load();
   }, [client]);
+
+  useEffect(() => {
+    if (status === 'idle') {
+      setShowToast(false);
+      return;
+    }
+
+    setShowToast(true);
+    const timer = setTimeout(() => setShowToast(false), 2800);
+    return () => clearTimeout(timer);
+  }, [status, detail]);
 
   useEffect(() => {
     let isMounted = true;
@@ -97,7 +109,6 @@ export default function ScanPage() {
           config,
           async (decodedText: string) => {
             if (!isMounted) return;
-            setDetail(decodedText);
             await handleToken(decodedText);
           },
           () => {}
@@ -142,7 +153,7 @@ export default function ScanPage() {
       return;
     }
     setStatus(body.status as ScanStatus);
-    setDetail(token);
+    setDetail(statusMessages[body.status as ScanStatus] || '');
   };
 
   const statusColor: Record<ScanStatus, string> = {
@@ -152,6 +163,23 @@ export default function ScanPage() {
     not_found: '#5c1a1a',
     error: '#5c1a1a',
   };
+
+  const statusMessages: Record<ScanStatus, string> = {
+    idle: 'Listo para escanear',
+    valid: 'Entrada válida',
+    already_used: 'Entrada ya fue utilizada',
+    not_found: 'Entrada no encontrada',
+    error: detail || 'Error al escanear',
+  };
+
+  const toastColor: Record<Exclude<ScanStatus, 'idle'>, string> = {
+    valid: '#16a34a',
+    already_used: '#b91c1c',
+    not_found: '#b91c1c',
+    error: '#b91c1c',
+  };
+
+  const statusMessage = statusMessages[status];
 
   return (
     <section>
@@ -179,8 +207,21 @@ export default function ScanPage() {
           fontSize: '1.2rem',
         }}
       >
-        Status: {status.toUpperCase()} {detail && `- ${detail}`}
+        Status: {status.toUpperCase()} {statusMessage && `- ${statusMessage}`}
       </div>
+      {showToast && status !== 'idle' && (
+        <div
+          className="scan-toast"
+          role="status"
+          aria-live="assertive"
+          style={{ background: toastColor[status as Exclude<ScanStatus, 'idle'>] }}
+        >
+          <div className="scan-toast__title">
+            {status === 'valid' ? 'Escaneo correcto' : 'Aviso de escaneo'}
+          </div>
+          <div className="scan-toast__text">{statusMessage}</div>
+        </div>
+      )}
     </section>
   );
 }
