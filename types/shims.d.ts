@@ -65,13 +65,12 @@ declare module '@supabase/supabase-js' {
   }
 
   export interface SupabaseQueryBuilder {
-    select(columns?: string): this & Promise<{ data: any }>; // simplified chaining support
-    update(values: any): this;
+    select(columns?: string): this & Promise<{ data: any; error: { message: string } | null }>; // simplified chaining support
     insert(values: any): Promise<{ error: { message: string } | null }>;
     order(column: string, options?: any): this;
     eq(column: string, value: any): this;
     is(column: string, value: any): this;
-    maybeSingle(): Promise<{ data: any }>;
+    maybeSingle(): Promise<{ data: any; error: { message: string } | null }>;  
   }
 
   export interface SupabaseClient {
