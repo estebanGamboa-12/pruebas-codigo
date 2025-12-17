@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { supabaseClient } from '../../lib/supabaseClient';
+import { missingSupabaseConfigMessage, supabaseClient } from '../../lib/supabaseClient';
 import QRCode from 'react-qr-code';
 
 interface EventRow {
@@ -41,6 +41,16 @@ export default function AdminPage() {
   const [issuedTokens, setIssuedTokens] = useState<IssuedToken[]>([]);
   const [message, setMessage] = useState<string | null>(null);
   const [showQrGallery, setShowQrGallery] = useState(false);
+
+  if (!supabaseClient) {
+    return (
+      <section>
+        <h2>Admin</h2>
+        <div className="alert error">{missingSupabaseConfigMessage}</div>
+        <p>Configura las variables de Supabase y recarga para crear eventos, tipos de ticket y emitir QR.</p>
+      </section>
+    );
+  }
 
   useEffect(() => {
     const load = async () => {

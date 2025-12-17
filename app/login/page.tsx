@@ -1,13 +1,23 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { supabaseClient } from '../../lib/supabaseClient';
+import { missingSupabaseConfigMessage, supabaseClient } from '../../lib/supabaseClient';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState<string | null>(null);
   const [sessionEmail, setSessionEmail] = useState<string | null>(null);
+
+  if (!supabaseClient) {
+    return (
+      <section>
+        <h2>Login</h2>
+        <div className="alert error">{missingSupabaseConfigMessage}</div>
+        <p>Configura las variables de entorno y recarga la página para iniciar sesión.</p>
+      </section>
+    );
+  }
 
   useEffect(() => {
     supabaseClient.auth.getSession().then(({ data }) => {
