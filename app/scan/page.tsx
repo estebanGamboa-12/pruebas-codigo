@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { supabaseClient } from '../../lib/supabaseClient';
+import { missingSupabaseConfigMessage, supabaseClient } from '../../lib/supabaseClient';
 
 interface EventRow {
   id: string;
@@ -17,6 +17,16 @@ export default function ScanPage() {
   const [detail, setDetail] = useState('');
   const scannerRef = useRef<any>(null);
   const [role, setRole] = useState<string | null>(null);
+
+  if (!supabaseClient) {
+    return (
+      <section>
+        <h2>Scan tickets</h2>
+        <div className="alert error">{missingSupabaseConfigMessage}</div>
+        <p>Agrega las variables de entorno de Supabase y recarga para poder escanear entradas.</p>
+      </section>
+    );
+  }
 
   useEffect(() => {
     const load = async () => {
