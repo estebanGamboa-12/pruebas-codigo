@@ -39,11 +39,33 @@ export default function ScanPage() {
     let isMounted = true;
     const startScanner = async () => {
       if (!eventId) return;
+      if (typeof window === 'undefined') return;
+
+      const ensureCameraAccess = async () => {
+        if (!window.isSecureContext) {
+          throw new Error('Camera requires HTTPS or localhost');
+        }
+        if (!navigator?.mediaDevices?.getUserMedia) {
+          throw new Error('Camera access is not supported in this browser');
+        }
+        const permissionStatus = await navigator.permissions
+          ?.query({ name: 'camera' as PermissionName })
+          .catch(() => null);
+
+        if (permissionStatus?.state === 'denied') {
+          throw new Error('Camera permission denied in browser settings');
+        }
+
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+        stream.getTracks().forEach((track) => track.stop());
+      };
+
       const { Html5Qrcode } = await import('html5-qrcode');
       const config = { fps: 10, qrbox: 250 } as any;
       const html5QrCode = new Html5Qrcode('qr-reader');
       scannerRef.current = html5QrCode;
       try {
+        await ensureCameraAccess();
         await html5QrCode.start(
           { facingMode: 'environment' },
           config,
@@ -57,7 +79,8 @@ export default function ScanPage() {
       } catch (err) {
         console.error(err);
         setStatus('error');
-        setDetail('Camera permission needed');
+        const message = err instanceof Error ? err.message : 'Camera permission needed';
+        setDetail(message);
       }
     };
     startScanner();
