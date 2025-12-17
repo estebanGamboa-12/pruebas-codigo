@@ -206,6 +206,14 @@ export default function ScanPage() {
     error: '#5c1a1a',
   };
 
+  const statusLabel: Record<ScanStatus, string> = {
+    idle: 'Listo',
+    valid: 'Válido',
+    already_used: 'Ya usado',
+    not_found: 'No encontrado',
+    error: 'Error',
+  };
+
   const toastColor: Record<Exclude<ScanStatus, 'idle'>, string> = {
     valid: '#16a34a',
     already_used: '#b91c1c',
@@ -232,16 +240,15 @@ export default function ScanPage() {
       </select>
       <div id="qr-reader" style={{ width: '100%', maxWidth: 480, marginTop: 16 }} />
       <div
-        className="alert"
-        style={{
-          marginTop: 16,
-          background: statusColor[status],
-          color: '#fff',
-          textAlign: 'center',
-          fontSize: '1.2rem',
-        }}
+        className="scan-status-banner"
+        role="status"
+        aria-live="polite"
+        style={{ background: statusColor[status] }}
       >
-        Status: {status.toUpperCase()} {statusMessage && `- ${statusMessage}`}
+        <span className="scan-status-banner__badge">Estado</span>
+        <div className="scan-status-banner__text">
+          {statusLabel[status]} {statusMessage && `· ${statusMessage}`}
+        </div>
       </div>
       {showToast && status !== 'idle' && (
         <div
