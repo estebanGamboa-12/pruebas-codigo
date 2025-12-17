@@ -4,12 +4,13 @@ import { useEffect, useState } from 'react';
 import { missingSupabaseConfigMessage, supabaseClient } from '../../lib/supabaseClient';
 
 export default function LoginPage() {
+  const client = supabaseClient;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState<string | null>(null);
   const [sessionEmail, setSessionEmail] = useState<string | null>(null);
 
-  if (!supabaseClient) {
+  if (!client) {
     return (
       <section>
         <h2>Login</h2>
@@ -20,19 +21,19 @@ export default function LoginPage() {
   }
 
   useEffect(() => {
-    supabaseClient.auth.getSession().then(({ data }) => {
+    client.auth.getSession().then(({ data }) => {
       setSessionEmail(data.session?.user.email ?? null);
     });
-    const { data: listener } = supabaseClient.auth.onAuthStateChange((_, session) => {
+    const { data: listener } = client.auth.onAuthStateChange((_, session) => {
       setSessionEmail(session?.user.email ?? null);
     });
     return () => listener.subscription.unsubscribe();
-  }, []);
+  }, [client]);
 
   const signIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage(null);
-    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    const { error } = await client.auth.signInWithPassword({ email, password });
     if (error) {
       setMessage(error.message);
     } else {
@@ -41,7 +42,7 @@ export default function LoginPage() {
   };
 
   const signOut = async () => {
-    await supabaseClient.auth.signOut();
+    await client.auth.signOut();
   };
 
   return (

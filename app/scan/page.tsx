@@ -11,6 +11,7 @@ interface EventRow {
 type ScanStatus = 'idle' | 'valid' | 'already_used' | 'not_found' | 'error';
 
 export default function ScanPage() {
+  const client = supabaseClient;
   const [events, setEvents] = useState<EventRow[]>([]);
   const [eventId, setEventId] = useState('');
   const [status, setStatus] = useState<ScanStatus>('idle');
@@ -18,7 +19,7 @@ export default function ScanPage() {
   const scannerRef = useRef<any>(null);
   const [role, setRole] = useState<string | null>(null);
 
-  if (!supabaseClient) {
+  if (!client) {
     return (
       <section>
         <h2>Scan tickets</h2>
@@ -30,20 +31,20 @@ export default function ScanPage() {
 
   useEffect(() => {
     const load = async () => {
-      const { data: sessionData } = await supabaseClient.auth.getSession();
+      const { data: sessionData } = await client.auth.getSession();
       const user = sessionData.session?.user;
       if (!user) return;
-      const { data: profile } = await supabaseClient
+      const { data: profile } = await client
         .from('profiles')
         .select('role')
         .eq('id', user.id)
         .maybeSingle();
       setRole(profile?.role ?? null);
-      const { data } = await supabaseClient.from('events').select('id, title').order('starts_at');
+      const { data } = await client.from('events').select('id, title').order('starts_at');
       setEvents(data ?? []);
     };
     load();
-  }, []);
+  }, [client]);
 
   useEffect(() => {
     let isMounted = true;
@@ -119,7 +120,7 @@ export default function ScanPage() {
   }, [eventId]);
 
   const handleToken = async (token: string) => {
-    const { data: sessionData } = await supabaseClient.auth.getSession();
+    const { data: sessionData } = await client.auth.getSession();
     const access = sessionData.session?.access_token;
     if (!access) {
       setStatus('error');
