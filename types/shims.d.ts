@@ -64,9 +64,11 @@ declare module '@supabase/supabase-js' {
 
   export interface SupabaseQueryBuilder {
     select(columns?: string): this & Promise<{ data: any }>; // simplified chaining support
+    update(values: any): this;
     insert(values: any): Promise<{ error: { message: string } | null }>;
     order(column: string, options?: any): this;
     eq(column: string, value: any): this;
+    is(column: string, value: any): this;
     maybeSingle(): Promise<{ data: any }>;
   }
 
@@ -75,5 +77,5 @@ declare module '@supabase/supabase-js' {
     from(table: string): SupabaseQueryBuilder;
   }
 
-  export function createClient(url: string, key: string): SupabaseClient;
+  export function createClient(url: string, key: string, options?: any): SupabaseClient;
 }
