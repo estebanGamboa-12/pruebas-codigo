@@ -12,7 +12,7 @@ export default function TicketDisplay({ params }: Props) {
     <section>
       <h2>Ticket for Oasis</h2>
       <p>Present this QR at the entrance.</p>
-      <QRCode value={token} size={220} bgColor="#0e1118" fgColor="#e8ecf2" />
+      <QRCode value={token} size={220} bgColor="#0e1118" fgColor="#ffffffff" />
       <p style={{ wordBreak: 'break-all' }}>Token: {token}</p>
     </section>
   );
