@@ -66,6 +66,7 @@ declare module '@supabase/supabase-js' {
 
   export interface SupabaseQueryBuilder {
     select(columns?: string): this & Promise<{ data: any; error: { message: string } | null }>; // simplified chaining support
+      update(values: any): this & Promise<{ data: any; error: { message: string } | null }>;
     insert(values: any): Promise<{ error: { message: string } | null }>;
     order(column: string, options?: any): this;
     eq(column: string, value: any): this;
