@@ -301,7 +301,7 @@ export default function AdminPage() {
           <div className="qr-grid">
             {issuedTokens.map((it) => (
               <div className="qr-card" key={`${it.token}-${it.createdAt}-qr`}>
-                <QRCode value={it.token} size={150} bgColor="#0e1118" fgColor="#e8ecf2" />
+                <QRCode value={it.token} size={150} bgColor="#ffffff" fgColor="#0e1118" />
                 <p>{it.token}</p>
               </div>
             ))}
