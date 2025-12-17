@@ -35,7 +35,7 @@ export default function AdminPage() {
     );
   }
 
-  const client = supabaseClient;
+  const client = supabaseClient!;
   const [role, setRole] = useState<string | null>(null);
   const [events, setEvents] = useState<EventRow[]>([]);
   const [ticketTypes, setTicketTypes] = useState<TicketTypeRow[]>([]);
