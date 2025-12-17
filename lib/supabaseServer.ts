@@ -1,9 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
 import { headers } from 'next/headers';
-import { env } from './env';
+import { envServer } from './env-server';
 
-const supabaseUrl = env.supabaseUrl;
-const serviceKey = env.supabaseServiceRoleKey;
+const supabaseUrl = envServer.supabaseUrl;
+const serviceKey = envServer.supabaseServiceRoleKey;
 
 export function getServiceSupabase() {
   const authHeader = headers().get('authorization');
