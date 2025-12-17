@@ -1,3 +1,5 @@
+import 'server-only';
+
 function getEnvVariable(name: string) {
   const value = process.env[name];
 
@@ -8,8 +10,7 @@ function getEnvVariable(name: string) {
   return value;
 }
 
-export const env = {
+export const envServer = {
   supabaseUrl: getEnvVariable('NEXT_PUBLIC_SUPABASE_URL'),
-  supabaseAnonKey: getEnvVariable('NEXT_PUBLIC_SUPABASE_ANON_KEY'),
   supabaseServiceRoleKey: getEnvVariable('SUPABASE_SERVICE_ROLE_KEY'),
 };
