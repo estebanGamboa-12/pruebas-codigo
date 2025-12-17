@@ -25,6 +25,16 @@ interface IssuedToken {
 }
 
 export default function AdminPage() {
+  if (!supabaseClient) {
+    return (
+      <section>
+        <h2>Admin</h2>
+        <div className="alert error">{missingSupabaseConfigMessage}</div>
+        <p>Configura las variables de Supabase y recarga para crear eventos, tipos de ticket y emitir QR.</p>
+      </section>
+    );
+  }
+
   const client = supabaseClient;
   const [role, setRole] = useState<string | null>(null);
   const [events, setEvents] = useState<EventRow[]>([]);
@@ -42,16 +52,6 @@ export default function AdminPage() {
   const [issuedTokens, setIssuedTokens] = useState<IssuedToken[]>([]);
   const [message, setMessage] = useState<string | null>(null);
   const [showQrGallery, setShowQrGallery] = useState(false);
-
-  if (!client) {
-    return (
-      <section>
-        <h2>Admin</h2>
-        <div className="alert error">{missingSupabaseConfigMessage}</div>
-        <p>Configura las variables de Supabase y recarga para crear eventos, tipos de ticket y emitir QR.</p>
-      </section>
-    );
-  }
 
   useEffect(() => {
     const load = async () => {
