@@ -10,6 +10,13 @@ interface EventRow {
 
 type ScanStatus = 'idle' | 'valid' | 'already_used' | 'not_found' | 'error';
 
+type ScanLogEntry = {
+  token: string;
+  status: ScanStatus;
+  message: string;
+  timestamp: string;
+};
+
 export default function ScanPage() {
   const client = supabaseClient;
   const [events, setEvents] = useState<EventRow[]>([]);
@@ -19,6 +26,7 @@ export default function ScanPage() {
   const scannerRef = useRef<any>(null);
   const [role, setRole] = useState<string | null>(null);
   const [showToast, setShowToast] = useState(false);
+  const [scanLog, setScanLog] = useState<ScanLogEntry[]>([]);
 
   if (!client) {
     return (
@@ -130,12 +138,41 @@ export default function ScanPage() {
     };
   }, [eventId]);
 
+  const getStatusMessage = (currentStatus: ScanStatus, customDetail?: string) => {
+    switch (currentStatus) {
+      case 'valid':
+        return 'Entrada válida';
+      case 'already_used':
+        return 'Entrada ya fue utilizada';
+      case 'not_found':
+        return 'Entrada no encontrada';
+      case 'error':
+        return customDetail || detail || 'Error al escanear';
+      case 'idle':
+      default:
+        return 'Listo para escanear';
+    }
+  };
+
+  const addLogEntry = (token: string, currentStatus: ScanStatus, message: string) => {
+    setScanLog((prev) => [
+      {
+        token,
+        status: currentStatus,
+        message,
+        timestamp: new Date().toISOString(),
+      },
+      ...prev,
+    ].slice(0, 25));
+  };
+
   const handleToken = async (token: string) => {
     const { data: sessionData } = await client.auth.getSession();
     const access = sessionData.session?.access_token;
     if (!access) {
       setStatus('error');
       setDetail('Login required');
+      addLogEntry(token, 'error', 'Login required');
       return;
     }
     const res = await fetch('/api/checkin', {
@@ -148,12 +185,17 @@ export default function ScanPage() {
     });
     const body = await res.json();
     if (!res.ok) {
+      const message = body.error || 'Failed';
       setStatus('error');
-      setDetail(body.error || 'Failed');
+      setDetail(message);
+      addLogEntry(token, 'error', message);
       return;
     }
-    setStatus(body.status as ScanStatus);
-    setDetail(statusMessages[body.status as ScanStatus] || '');
+    const nextStatus = body.status as ScanStatus;
+    const message = getStatusMessage(nextStatus, detail);
+    setStatus(nextStatus);
+    setDetail(nextStatus === 'error' ? message : '');
+    addLogEntry(token, nextStatus, message);
   };
 
   const statusColor: Record<ScanStatus, string> = {
@@ -164,14 +206,6 @@ export default function ScanPage() {
     error: '#5c1a1a',
   };
 
-  const statusMessages: Record<ScanStatus, string> = {
-    idle: 'Listo para escanear',
-    valid: 'Entrada válida',
-    already_used: 'Entrada ya fue utilizada',
-    not_found: 'Entrada no encontrada',
-    error: detail || 'Error al escanear',
-  };
-
   const toastColor: Record<Exclude<ScanStatus, 'idle'>, string> = {
     valid: '#16a34a',
     already_used: '#b91c1c',
@@ -179,7 +213,7 @@ export default function ScanPage() {
     error: '#b91c1c',
   };
 
-  const statusMessage = statusMessages[status];
+  const statusMessage = getStatusMessage(status);
 
   return (
     <section>
@@ -222,6 +256,25 @@ export default function ScanPage() {
           <div className="scan-toast__text">{statusMessage}</div>
         </div>
       )}
+
+      <section>
+        <h3>Últimos escaneos</h3>
+        {scanLog.length === 0 && <p>Escanea un código para ver el historial.</p>}
+        {scanLog.length > 0 && (
+          <ul className="scan-log">
+            {scanLog.map((entry) => (
+              <li key={`${entry.token}-${entry.timestamp}`} className={`scan-log__item scan-log__item--${entry.status}`}>
+                <div className="scan-log__top">
+                  <span className="scan-log__status">{entry.status.toUpperCase()}</span>
+                  <span className="scan-log__time">{new Date(entry.timestamp).toLocaleTimeString()}</span>
+                </div>
+                <div className="scan-log__message">{entry.message}</div>
+                <div className="scan-log__token">{entry.token}</div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </section>
   );
 }

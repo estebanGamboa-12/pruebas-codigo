@@ -150,6 +150,59 @@ section {
   color: #f7f9fc;
 }
 
+.scan-log {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+  display: grid;
+  gap: 10px;
+}
+
+.scan-log__item {
+  border: 1px solid #2d3345;
+  border-left-width: 6px;
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #111520;
+  display: grid;
+  gap: 6px;
+}
+
+.scan-log__item--valid {
+  border-left-color: #16a34a;
+}
+
+.scan-log__item--already_used,
+.scan-log__item--not_found,
+.scan-log__item--error {
+  border-left-color: #b91c1c;
+}
+
+.scan-log__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+}
+
+.scan-log__status {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.scan-log__message {
+  color: #e8ecf2;
+}
+
+.scan-log__token {
+  font-family: ui-monospace, SFMono-Regular, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
+  font-size: 0.85rem;
+  color: #9ab0c9;
+  word-break: break-all;
+}
+
 @keyframes toast-slide {
   from {
     opacity: 0;
