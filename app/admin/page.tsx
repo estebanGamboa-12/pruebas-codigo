@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { supabaseClient } from '../../lib/supabaseClient';
+import QRCode from 'react-qr-code';
 
 interface EventRow {
   id: string;
@@ -39,6 +40,7 @@ export default function AdminPage() {
   const [buyerEmail, setBuyerEmail] = useState('');
   const [issuedTokens, setIssuedTokens] = useState<IssuedToken[]>([]);
   const [message, setMessage] = useState<string | null>(null);
+  const [showQrGallery, setShowQrGallery] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -271,6 +273,29 @@ export default function AdminPage() {
             )}
           </tbody>
         </table>
+      </section>
+
+      <section id="qr-gallery">
+        <h3>QR de esta sesión</h3>
+        <p>Visualiza todos los códigos emitidos recientemente para poder probarlos.</p>
+        <button
+          type="button"
+          onClick={() => setShowQrGallery((prev) => !prev)}
+          disabled={issuedTokens.length === 0}
+        >
+          {showQrGallery ? 'Ocultar QR' : 'Mostrar QR'}
+        </button>
+        {issuedTokens.length === 0 && <p>No hay tokens emitidos en esta sesión.</p>}
+        {showQrGallery && issuedTokens.length > 0 && (
+          <div className="qr-grid">
+            {issuedTokens.map((it) => (
+              <div className="qr-card" key={`${it.token}-${it.createdAt}-qr`}>
+                <QRCode value={it.token} size={150} bgColor="#0e1118" fgColor="#e8ecf2" />
+                <p>{it.token}</p>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
       {message && <div className="alert success">{message}</div>}

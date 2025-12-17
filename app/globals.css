@@ -11,6 +11,38 @@ main {
   margin: 0 auto;
 }
 
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #2d3345;
+}
+
+.nav {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.nav a {
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: #161b27;
+  border: 1px solid #2d3345;
+  text-decoration: none;
+  color: #cde5ff;
+  font-weight: 600;
+}
+
+.nav a:hover {
+  border-color: #3d4661;
+  background: #1d2332;
+}
+
 a {
   color: #7ad7f0;
 }
@@ -68,4 +100,25 @@ section {
 .alert.error {
   background: #321013;
   color: #f8a5b7;
+}
+
+.qr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.qr-card {
+  background: #141826;
+  border: 1px solid #2d3345;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+
+.qr-card p {
+  word-break: break-all;
+  font-size: 0.9rem;
+  color: #c2c8d6;
 }
