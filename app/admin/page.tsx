@@ -25,6 +25,7 @@ interface IssuedToken {
 }
 
 export default function AdminPage() {
+  const client = supabaseClient;
   const [role, setRole] = useState<string | null>(null);
   const [events, setEvents] = useState<EventRow[]>([]);
   const [ticketTypes, setTicketTypes] = useState<TicketTypeRow[]>([]);
@@ -42,7 +43,7 @@ export default function AdminPage() {
   const [message, setMessage] = useState<string | null>(null);
   const [showQrGallery, setShowQrGallery] = useState(false);
 
-  if (!supabaseClient) {
+  if (!client) {
     return (
       <section>
         <h2>Admin</h2>
@@ -54,10 +55,10 @@ export default function AdminPage() {
 
   useEffect(() => {
     const load = async () => {
-      const { data: sessionData } = await supabaseClient.auth.getSession();
+      const { data: sessionData } = await client.auth.getSession();
       const user = sessionData.session?.user;
       if (!user) return;
-      const { data: profile } = await supabaseClient
+      const { data: profile } = await client
         .from('profiles')
         .select('role')
         .eq('id', user.id)
@@ -66,15 +67,15 @@ export default function AdminPage() {
       await refreshData();
     };
     load();
-  }, []);
+  }, [client]);
 
   const refreshData = async () => {
-    const { data: eventsData } = await supabaseClient
+    const { data: eventsData } = await client
       .from('events')
       .select('id, title, starts_at')
       .order('starts_at', { ascending: true });
     setEvents(eventsData ?? []);
-    const { data: typesData } = await supabaseClient
+    const { data: typesData } = await client
       .from('ticket_types')
       .select('id, event_id, name, capacity')
       .order('created_at', { ascending: false });
@@ -86,7 +87,7 @@ export default function AdminPage() {
   const createEvent = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage(null);
-    const { error } = await supabaseClient.from('events').insert({
+    const { error } = await client.from('events').insert({
       title,
       starts_at: startsAt ? new Date(startsAt).toISOString() : null,
       status: 'draft',
@@ -104,7 +105,7 @@ export default function AdminPage() {
     e.preventDefault();
     setMessage(null);
     if (!ticketEventId) return setMessage('Select event');
-    const { error } = await supabaseClient.from('ticket_types').insert({
+    const { error } = await client.from('ticket_types').insert({
       event_id: ticketEventId,
       name: ticketName,
       capacity: capacity || null,
@@ -121,7 +122,7 @@ export default function AdminPage() {
   const issueTickets = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage(null);
-    const { data: sessionData } = await supabaseClient.auth.getSession();
+    const { data: sessionData } = await client.auth.getSession();
     const token = sessionData.session?.access_token;
     if (!token) {
       setMessage('Login required.');
