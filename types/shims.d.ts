@@ -53,6 +53,7 @@ declare module 'html5-qrcode' {
 
 declare module '@supabase/supabase-js' {
   export interface SupabaseAuthClient {
+    getUser(jwt?: string): Promise<{ data: { user: any | null }; error?: { message: string } | null }>;
     getSession(): Promise<{ data: { session: any } }>;
     onAuthStateChange(
       callback: (event: any, session: any) => void
