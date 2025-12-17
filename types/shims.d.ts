@@ -52,6 +52,8 @@ declare module 'html5-qrcode' {
 }
 
 declare module '@supabase/supabase-js' {
+  type SupabaseResult = Promise<{ data: any; error: { message: string } | null }>;
+
   export interface SupabaseAuthClient {
     getUser(jwt?: string): Promise<{ data: { user: any | null }; error?: { message: string } | null }>;
     getSession(): Promise<{ data: { session: any } }>;
@@ -63,11 +65,13 @@ declare module '@supabase/supabase-js' {
   }
 
   export interface SupabaseQueryBuilder {
-    select(columns?: string): this & Promise<{ data: any }>; // simplified chaining support
-    insert(values: any): Promise<{ error: { message: string } | null }>;
-    order(column: string, options?: any): this;
-    eq(column: string, value: any): this;
-    maybeSingle(): Promise<{ data: any }>;
+    select(columns?: string): SupabaseQueryBuilder & SupabaseResult; // simplified chaining support
+    update(values: any): SupabaseQueryBuilder & SupabaseResult;
+    insert(values: any): Promise<{ data?: any; error: { message: string } | null }>;
+    order(column: string, options?: any): SupabaseQueryBuilder & SupabaseResult;
+    eq(column: string, value: any): SupabaseQueryBuilder & SupabaseResult;
+    is(column: string, value: any): SupabaseQueryBuilder & SupabaseResult;
+    maybeSingle(): Promise<{ data: any; error: { message: string } | null }>;
   }
 
   export interface SupabaseClient {
@@ -75,5 +79,5 @@ declare module '@supabase/supabase-js' {
     from(table: string): SupabaseQueryBuilder;
   }
 
-  export function createClient(url: string, key: string): SupabaseClient;
+  export function createClient(url: string, key: string, options?: any): SupabaseClient;
 }
