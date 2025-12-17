@@ -52,12 +52,10 @@ export default function ScanPage() {
       if (typeof window === 'undefined') return;
 
       const ensureCameraAccess = async () => {
-        if (!window.isSecureContext) {
-          throw new Error('Camera requires HTTPS or localhost');
-        }
         if (!navigator?.mediaDevices?.getUserMedia) {
           throw new Error('Camera access is not supported in this browser');
         }
+
         const permissionStatus = await navigator.permissions
           ?.query({ name: 'camera' as PermissionName })
           .catch(() => null);
@@ -66,8 +64,25 @@ export default function ScanPage() {
           throw new Error('Camera permission denied in browser settings');
         }
 
-        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-        stream.getTracks().forEach((track) => track.stop());
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+          stream.getTracks().forEach((track) => track.stop());
+        } catch (err) {
+          const isInsecure = typeof window !== 'undefined' && window.location.protocol === 'http:';
+          const needsSecureContext =
+            err instanceof Error && err.message.toLowerCase().includes('only secure origins');
+
+          if (isInsecure || needsSecureContext) {
+            const host = typeof window !== 'undefined' ? window.location.hostname : 'localhost';
+            throw new Error(
+              `Camera requires HTTPS or localhost. Abre la app usando https://${host} o expón un túnel seguro.`
+            );
+          }
+
+          throw err instanceof Error
+            ? err
+            : new Error('Camera permission needed (revisa los permisos del navegador)');
+        }
       };
 
       const { Html5Qrcode } = await import('html5-qrcode');
