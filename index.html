@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Oasis | Pub & Eventos</title>
+  <meta name="description" content="Oasis Pub en El Tiemblo. Eventos, reservas y galería." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- Background glow -->
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <!-- Header / Nav -->
+  <header class="header" id="top">
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="Ir al inicio">
+        <span class="brand-mark" aria-hidden="true">O</span>
+        <span class="brand-text">
+          <span class="brand-title">Oasis</span>
+          <span class="brand-subtitle">Pub · El Tiemblo</span>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Navegación principal">
+        <a href="#inicio" class="link">Inicio</a>
+        <a href="#eventos" class="link">Eventos</a>
+        <a href="#galeria" class="link">Galería</a>
+        <a href="#sobre" class="link">Sobre Nosotros</a>
+        <a href="#contacto" class="link">Contacto</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="btn btn-ghost" href="#eventos">Ver eventos</a>
+        <button class="btn btn-primary" id="openReserva" type="button">Reserva</button>
+
+        <button class="hamburger" id="hamburger" type="button" aria-label="Abrir menú" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <div class="container mobile-menu-inner">
+        <a href="#inicio" class="m-link">Inicio</a>
+        <a href="#eventos" class="m-link">Eventos</a>
+        <a href="#galeria" class="m-link">Galería</a>
+        <a href="#sobre" class="m-link">Sobre Nosotros</a>
+        <a href="#contacto" class="m-link">Contacto</a>
+        <button class="btn btn-primary w100" id="openReservaMobile" type="button">Reserva</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main>
+    <!-- Hero -->
+    <section class="hero" id="inicio">
+      <div class="hero-media" aria-hidden="true"></div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+
+      <div class="container hero-content">
+        <div class="badge">
+          <span class="dot"></span>
+          Viernes & sábados · 23:30 - 05:00
+        </div>
+
+        <h1>Bienvenidos a <span class="accent">Oasis</span></h1>
+        <p class="lead">
+          Tu discoteca / pub en El Tiemblo. Música, ambiente y noches que se recuerdan.
+          Consulta los próximos eventos y reserva mesa para tu grupo.
+        </p>
+
+        <div class="hero-cta">
+          <a class="btn btn-ghost" href="#eventos">Ver eventos</a>
+          <button class="btn btn-primary" id="openReservaHero" type="button">Reservar</button>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat">
+            <div class="stat-kpi">+50</div>
+            <div class="stat-label">Noches / temporada</div>
+          </div>
+          <div class="stat">
+            <div class="stat-kpi">El Tiemblo</div>
+            <div class="stat-label">Ávila</div>
+          </div>
+          <div class="stat">
+            <div class="stat-kpi">VIP</div>
+            <div class="stat-label">Reservas disponibles</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Events -->
+    <section class="section" id="eventos">
+      <div class="container">
+        <div class="section-head">
+          <h2>Próximos eventos</h2>
+          <p>Cartelera actualizada. Guarda tu fecha y entra con el plan cerrado.</p>
+        </div>
+
+        <div class="events-grid" id="eventsGrid">
+          <!-- JS renders cards -->
+        </div>
+
+        <div class="section-actions">
+          <a class="btn btn-ghost" href="#contacto">Ver todos los eventos</a>
+          <button class="btn btn-primary" id="openReservaEvents" type="button">Reservar ahora</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery -->
+    <section class="section section-alt" id="galeria">
+      <div class="container">
+        <div class="section-head">
+          <h2>Galería</h2>
+          <p>Un vistazo al ambiente de Oasis: luces, energía y buen rollo.</p>
+        </div>
+
+        <div class="gallery-grid">
+          <figure class="g-item g1"><span class="g-overlay">Noche</span></figure>
+          <figure class="g-item g2"><span class="g-overlay">Sala</span></figure>
+          <figure class="g-item g3"><span class="g-overlay">DJ</span></figure>
+          <figure class="g-item g4"><span class="g-overlay">Bar</span></figure>
+          <figure class="g-item g5"><span class="g-overlay">Fiesta</span></figure>
+          <figure class="g-item g6"><span class="g-overlay">Ambiente</span></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="section" id="sobre">
+      <div class="container about">
+        <div class="about-card">
+          <h2>Sobre Oasis</h2>
+          <p>
+            Oasis es un punto de encuentro en El Tiemblo para los que buscan una noche con buen ambiente,
+            música y eventos temáticos. Cuidamos el sonido, la iluminación y la experiencia.
+          </p>
+
+          <div class="about-features">
+            <div class="feature">
+              <div class="icon">✦</div>
+              <div>
+                <div class="feature-title">Eventos temáticos</div>
+                <div class="feature-text">Tardebuena, Carnaval, especiales y fechas señaladas.</div>
+              </div>
+            </div>
+            <div class="feature">
+              <div class="icon">✦</div>
+              <div>
+                <div class="feature-title">Reservas VIP</div>
+                <div class="feature-text">Organiza tu grupo con reserva y atención rápida.</div>
+              </div>
+            </div>
+            <div class="feature">
+              <div class="icon">✦</div>
+              <div>
+                <div class="feature-title">Ubicación clara</div>
+                <div class="feature-text">Acceso directo a Google Maps y contacto inmediato.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="about-actions">
+            <button class="btn btn-primary" id="openReservaAbout" type="button">Quiero reservar</button>
+            <a class="btn btn-ghost" href="#contacto">Contactar</a>
+          </div>
+        </div>
+
+        <aside class="about-aside">
+          <div class="info-panel">
+            <h3>Horario</h3>
+            <ul class="list">
+              <li><span>Viernes</span><span>23:30 - 05:00</span></li>
+              <li><span>Sábado</span><span>23:30 - 05:00</span></li>
+            </ul>
+          </div>
+
+          <div class="info-panel">
+            <h3>Dirección</h3>
+            <p class="muted">
+              Carretera de Cebreros 32 · El Tiemblo, Ávila<br/>
+              (Calle Juan Ramón Jiménez 1D)
+            </p>
+            <a class="btn btn-ghost w100" target="_blank" rel="noreferrer"
+               href="https://www.google.com/maps/search/?api=1&query=Oasis%20El%20Tiemblo%20Avila">
+              Abrir en Google Maps
+            </a>
+          </div>
+
+          <div class="info-panel">
+            <h3>Redes</h3>
+            <div class="socials">
+              <a class="pill" target="_blank" rel="noreferrer" href="https://instagram.com/oasispub_">Instagram</a>
+              <a class="pill" href="#contacto">WhatsApp</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section section-alt" id="contacto">
+      <div class="container contact">
+        <div class="contact-card">
+          <h2>Contacto</h2>
+          <p class="muted">
+            Para reservas rápidas, escribe por WhatsApp. Para eventos privados, cuéntanos fecha y número de personas.
+          </p>
+
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div class="label">WhatsApp</div>
+              <a class="value" id="waLink" href="#" target="_blank" rel="noreferrer">Abrir chat</a>
+              <div class="hint">Se abre con un mensaje pre-escrito.</div>
+            </div>
+            <div class="contact-item">
+              <div class="label">Instagram</div>
+              <a class="value" target="_blank" rel="noreferrer" href="https://instagram.com/oasispub_">@oasispub_</a>
+              <div class="hint">Eventos, stories y cartelera.</div>
+            </div>
+            <div class="contact-item">
+              <div class="label">Ubicación</div>
+              <a class="value" target="_blank" rel="noreferrer"
+                 href="https://www.google.com/maps/search/?api=1&query=Oasis%20El%20Tiemblo%20Avila">
+                Ver en Maps
+              </a>
+              <div class="hint">Ruta directa desde tu móvil.</div>
+            </div>
+          </div>
+
+          <div class="contact-actions">
+            <button class="btn btn-primary" id="openReservaContact" type="button">Reservar</button>
+            <a class="btn btn-ghost" href="#inicio">Volver arriba</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <div class="footer-brand">Oasis</div>
+        <div class="footer-muted">© <span id="year"></span> · El Tiemblo (Ávila)</div>
+      </div>
+
+      <div class="footer-right">
+        <a class="f-link" href="#eventos">Eventos</a>
+        <a class="f-link" href="#galeria">Galería</a>
+        <a class="f-link" href="#contacto">Contacto</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Reserva Modal -->
+  <div class="modal" id="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <div class="modal-title" id="modalTitle">Reserva en Oasis</div>
+          <div class="modal-sub">Te abrimos WhatsApp con el mensaje ya preparado.</div>
+        </div>
+        <button class="modal-close" id="closeModal" type="button" aria-label="Cerrar">✕</button>
+      </div>
+
+      <form class="form" id="reservaForm">
+        <div class="form-row">
+          <label class="field">
+            <span>Nombre</span>
+            <input type="text" name="nombre" placeholder="Tu nombre" required />
+          </label>
+          <label class="field">
+            <span>Personas</span>
+            <input type="number" name="personas" placeholder="Ej: 6" min="1" max="50" required />
+          </label>
+        </div>
+
+        <div class="form-row">
+          <label class="field">
+            <span>Fecha</span>
+            <input type="date" name="fecha" required />
+          </label>
+          <label class="field">
+            <span>Hora</span>
+            <input type="time" name="hora" required />
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Notas (opcional)</span>
+          <textarea name="notas" rows="3" placeholder="Cumpleaños, VIP, preferencia de mesa..."></textarea>
+        </label>
+
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit">Enviar por WhatsApp</button>
+          <button class="btn btn-ghost" id="cancelModal" type="button">Cancelar</button>
+        </div>
+
+        <p class="fineprint">
+          Nota: si no tienes WhatsApp Web, se abrirá la app en el móvil.
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
