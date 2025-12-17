@@ -1,0 +1,71 @@
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+  background: #0e1118;
+  color: #e8ecf2;
+}
+
+main {
+  padding: 24px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+a {
+  color: #7ad7f0;
+}
+
+input, select, button, textarea {
+  background: #1a1f2b;
+  border: 1px solid #2d3345;
+  color: #e8ecf2;
+  padding: 8px;
+  border-radius: 6px;
+}
+
+button {
+  cursor: pointer;
+  background: linear-gradient(135deg, #1fb6ff, #7ad7f0);
+  color: #0b0f16;
+  font-weight: 600;
+}
+
+form {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding: 16px;
+  border: 1px solid #2d3345;
+  border-radius: 8px;
+  background: #141826;
+}
+
+section {
+  margin-bottom: 32px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  border: 1px solid #2d3345;
+  padding: 8px;
+}
+
+.alert {
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.alert.success {
+  background: #123026;
+  color: #8df3c5;
+}
+
+.alert.error {
+  background: #321013;
+  color: #f8a5b7;
+}
