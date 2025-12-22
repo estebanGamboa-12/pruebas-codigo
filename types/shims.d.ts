@@ -32,11 +32,6 @@ declare module 'next/link' {
   export default Link;
 }
 
-declare module 'react-qr-code' {
-  const QRCode: (props: { value: string; size?: number; bgColor?: string; fgColor?: string }) => any;
-  export default QRCode;
-}
-
 declare module 'html5-qrcode' {
   export class Html5Qrcode {
     constructor(elementId: string);
