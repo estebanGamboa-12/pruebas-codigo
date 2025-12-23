@@ -28,7 +28,7 @@ declare module 'next' {
 }
 
 declare module 'next/link' {
-  const Link: (props: { href: string; children?: any }) => any;
+  const Link: (props: { href: string; className?: string; prefetch?: boolean; children?: any }) => any;
   export default Link;
 }
 
